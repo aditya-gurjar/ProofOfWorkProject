@@ -92,7 +92,17 @@ class Blockchain(persistent.Persistent):
         # as well as the self.blocks data structure
 
         # Placeholder for (1a)
-        return [block_hash]
+        chain = []
+        if block_hash not in self.blocks.keys():
+            return chain
+        block = self.blocks[block_hash]
+
+        while not block.is_genesis:
+            chain.append(block.hash)
+            block = self.blocks[block.parent_hash]
+        
+        chain.append(block.hash)
+        return chain
 
     def get_all_block_weights(self):
         """ Get total weight for every block in the blockchain database.
