@@ -51,11 +51,11 @@ class PoABlock(Block):
         # (if seal is invalid, repeat)
 
         # Placeholder for (1b)
-        header_bytes = bytes(self.unsealed_header(), 'utf-8')
-        signing_key = bytes.fromhex(config.AUTHORITY_SK)
+        unsealed_header = bytes(self.unsealed_header(), 'utf-8')
+        signing_key = self.get_private_key()
 
         sk = SigningKey.from_string(signing_key, curve=ecdsa.NIST192p)
-        signature = sk.sign(header_bytes)
+        signature = sk.sign(unsealed_header)
 
         self.set_seal_data(int(signature.hex(), 16))
         
