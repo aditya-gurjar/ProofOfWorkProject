@@ -26,8 +26,8 @@ class PoWBlock(Block):
         """
 
         # Paste your answers to problem 1 here
-        
-        return 1
+        max_target = 1 << 256
+        return round(max_target / self.target) if 1 <= self.target <= max_target else 0
 
     def mine(self):
         """ PoW mining loop; attempts to seal a block with new seal data until the seal is valid

@@ -30,6 +30,13 @@ class PoABlock(Block):
         """
 
         # Paste your answers to problem 1 here
+        header_bytes = bytes(self.unsealed_header(), 'utf-8')
+        signing_key = bytes.fromhex(config.AUTHORITY_SK)
+
+        sk = SigningKey.from_string(signing_key, curve=ecdsa.NIST192p)
+        signature = sk.sign(header_bytes)
+
+        self.set_seal_data(int(signature.hex(), 16))
 
     def calculate_appropriate_target(self):
         """ Target in PoA is currently meaningless """

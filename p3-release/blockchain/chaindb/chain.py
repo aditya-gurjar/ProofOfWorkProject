@@ -63,6 +63,9 @@ class Blockchain(persistent.Persistent):
         Returns:
             (:obj:`list` of int): List of heights in the blockchain with blocks at that location.
         """
+        print("!!!!!!!!!!!!!!!!!!!!!!!!!")
+        print(list(self.chain.keys()))
+        print("!!!!!!!!!!!!!!!!!!!!!!!!!")
         all_heights = list(self.chain.keys())
         all_heights.sort()
         return all_heights
@@ -89,8 +92,17 @@ class Blockchain(persistent.Persistent):
         """
 
         # Paste your answers to problem 1 here
+        chain = []
+        if block_hash not in self.blocks.keys():
+            return chain
+        block = self.blocks[block_hash]
+
+        while not block.is_genesis:
+            chain.append(block.hash)
+            block = self.blocks[block.parent_hash]
         
-        return [block_hash]
+        chain.append(block.hash)
+        return chain
 
     def get_all_block_weights(self):
         """ Get total weight for every block in the blockchain database.
@@ -122,6 +134,7 @@ class Blockchain(persistent.Persistent):
 
         block_hashes_to_total_weights = self.get_all_block_weights()
         heaviest_block = None
+        print("!!!!!!!!!!!!!!!!!!!!!!", block_hashes_to_total_weights)
         for block_hash in block_hashes_to_total_weights:
             block = self.blocks[block_hash]
             weight_in_block = block_hashes_to_total_weights[block_hash]

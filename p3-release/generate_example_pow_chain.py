@@ -1,4 +1,5 @@
 import config
+import time
 from blockchain.transaction import Transaction, TransactionOutput
 from blockchain.pow_block import PoWBlock
 from blockchain import chaindb
@@ -29,6 +30,7 @@ genesis_block = PoWBlock(0, [genesis_tx], "genesis", is_genesis=True)
 chaindb.chain.add_block(genesis_block)
 
 gossip.gossip_message("addblock", genesis_block)
+time.sleep(0.5)
 
 curr_height = 1
 parent = genesis_block
@@ -86,6 +88,7 @@ while try_block <= MAX_BLOCK_TO_GENERATE:
         # block add failed; try again
         continue
     gossip.gossip_message("addblock", block)
+    time.sleep(0.5)
     print("Added block at height", curr_height)
     print(block.hash)
     curr_height += 1
